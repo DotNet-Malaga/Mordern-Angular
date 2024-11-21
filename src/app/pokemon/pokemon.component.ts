@@ -35,8 +35,10 @@ export class PokemonComponent {
 
   #pokemonListResource = resource({
     request: this.offset,
-    loader: ({ request: offset }) =>
-      fetch(`https://pokeapi.co/api/v2/pokemon?limit=50&offset=${offset}`)
+    loader: ({ request: offset, abortSignal }) =>
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=50&offset=${offset}`, {
+        signal: abortSignal,
+      })
         .then(res => res.json())
         .then(data =>
           data.results.map((pokemon: PokemonListResult) => ({

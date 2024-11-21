@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       <div
         class="h-full transition-all duration-300"
         [class]="getProgressBarClass()"
-        [style.width.%]="progress()">
+        [style.width.%]="progress() > 100 ? 100 : progress()">
         @if (progress() > 100) {
           <div class="flex justify-center items-center h-full">
             <span class="text-yellow-300 animate-pulse text-[10px]">⭐</span>
