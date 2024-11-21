@@ -4,39 +4,11 @@ import {
   input,
   output,
   resource,
-  ResourceLoader,
 } from '@angular/core';
-import { ProgressBarComponent } from '../progressbar.component';
-import { Skeleton } from '../skeleton.component';
+import { ProgressBarComponent } from '../ui/progressbar.component';
+import { Skeleton } from '../ui/skeleton.component';
+import { debounce } from '../utils/resource-utils';
 import { PokemonListResult, PokemonResult } from './pokemon.model';
-
-function wait(msec: number, signal: AbortSignal | undefined = undefined) {
-  return new Promise<void>((resolve, reject) => {
-    if (signal?.aborted) {
-      return reject(new DOMException('Aborted', 'AbortError'));
-    }
-
-    const timeoutId = setTimeout(() => {
-      resolve();
-    }, msec);
-
-    signal?.addEventListener('abort', () => {
-      clearTimeout(timeoutId);
-      reject(new DOMException('Aborted', 'AbortError'));
-    });
-  });
-}
-
-function debounce<T, U>(
-  loader: ResourceLoader<T, U>,
-  time = 300
-): ResourceLoader<T, U> {
-  return async param => {
-    await wait(time, param.abortSignal);
-    return await loader(param);
-  };
-}
-
 @Component({
   selector: 'app-pokemon-item',
   imports: [ProgressBarComponent, Skeleton],
